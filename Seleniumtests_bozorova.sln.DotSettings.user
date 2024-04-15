@@ -2,5 +2,6 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b8f559b0_002Df9af_002D4671_002D83df_002D82f2152b353f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Authorization" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::0C2A73DC-4036-4569-AA6B-761657BF6A07::net7.0::Seleniumtest_bozorova.SeleniumTestForPractice.Authorization&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::0C2A73DC-4036-4569-AA6B-761657BF6A07::net7.0::Seleniumtest_bozorova.SeleniumTestForPractice.TestMenu&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

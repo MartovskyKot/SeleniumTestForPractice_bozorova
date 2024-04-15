@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "PeUqVa4ck48E7Mee89idwpKc0zugudli4N4KBa1v02Au+/r2fbN7DNgsEPKP9fOkqN29HbRRv2VL7ZGzm++SdA==",
+  "dgSpecHash": "lcSot26yIp9pEXxtCt7T+ndRupHPVbN0Wl0g5k5wF9oXVONSKdsFSaoA9N0umEYYKpfB/LClE5xexR2zUOYl9g==",
   "success": true,
   "projectFilePath": "C:\\Users\\marto\\RiderProjects\\Seleniumtests_bozorova\\Seleniumtests_bozorova\\Seleniumtests_bozorova.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\marto\\.nuget\\packages\\dotnetseleniumextras.waithelpers\\3.11.0\\dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512",
     "C:\\Users\\marto\\.nuget\\packages\\microsoft.codecoverage\\17.9.0\\microsoft.codecoverage.17.9.0.nupkg.sha512",
     "C:\\Users\\marto\\.nuget\\packages\\microsoft.net.test.sdk\\17.9.0\\microsoft.net.test.sdk.17.9.0.nupkg.sha512",
     "C:\\Users\\marto\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.9.0\\microsoft.testplatform.objectmodel.17.9.0.nupkg.sha512",

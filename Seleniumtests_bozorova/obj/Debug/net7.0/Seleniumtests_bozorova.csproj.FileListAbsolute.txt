@@ -95,3 +95,4 @@ C:\Users\marto\RiderProjects\Seleniumtests_bozorova\Seleniumtests_bozorova\obj\D
 C:\Users\marto\RiderProjects\Seleniumtests_bozorova\Seleniumtests_bozorova\obj\Debug\net7.0\Seleniumtests_bozorova.pdb
 C:\Users\marto\RiderProjects\Seleniumtests_bozorova\Seleniumtests_bozorova\obj\Debug\net7.0\Seleniumtests_bozorova.genruntimeconfig.cache
 C:\Users\marto\RiderProjects\Seleniumtests_bozorova\Seleniumtests_bozorova\obj\Debug\net7.0\ref\Seleniumtests_bozorova.dll
+C:\Users\marto\RiderProjects\Seleniumtests_bozorova\Seleniumtests_bozorova\bin\Debug\net7.0\SeleniumExtras.WaitHelpers.dll
