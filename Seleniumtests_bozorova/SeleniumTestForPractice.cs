@@ -10,20 +10,20 @@ public class SeleniumTestForPractice
 {
 
     public ChromeDriver driver;
+
+    [SetUp]
+    public void SetUp()
+    {
+        var options = new ChromeOptions();
+        options.AddArguments("--no-sandbox", "--start-maximized", "--disable-extensions");
+        driver = new ChromeDriver(options);
+        // - настраиваем неявное ожидание в 15 секунд
+        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+    }
     
     [Test]
     public void Authorization()
     {
-        var options = new ChromeOptions();
-        options.AddArguments("--no-sandbox", "--start-maximized", "--disable-extensions");
-        
-        // -звйти в хром ( с помощью вебдрайвера)
-        driver = new ChromeDriver(options);
-        
-        //Неявное ожидание
-        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
-        
-        //ожидания появления страницы
         
         // -перейти по урлу https://staff-testing.testkontur.ru
         driver.Navigate().GoToUrl("https://staff-testing.testkontur.ru");
@@ -44,39 +44,40 @@ public class SeleniumTestForPractice
         // -нажать на кнопку "войти"
         var enter = driver.FindElement(By.Name("button"));
         enter.Click();
-        
-        //
-        
-        // Thread.Sleep(3000);
-        
-        // - проверяем что находимся на нужной странице
-        // var currentUrl = driver.Url;
-        // Assert.That(currentUrl == "https://staff-testing.testkontur.ru/news", $"Фактический URL {currentUrl}");
-        
-        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")) is not null);
 
-        //- закрываем браузер и убиваем процесс драйвера
+        // - проверяем что находимся на нужной странице
+
+        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed);
+
+        
     }
 
     [TearDown]
     public void TearDown()
     {
+        //- закрываем браузер и убиваем процесс драйвера
+        driver.Close();
         driver.Quit();
     }
 
     [Test]
     public void TestMenu()
     {
-        var options = new ChromeOptions();
-        options.AddArguments("--no-sandbox", "--start-maximized", "--disable-extensions");
-        driver = new ChromeDriver(options);
-        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+        Auth("user", "1q2w3e4r%T");
         driver.Navigate().GoToUrl("https://staff-testing.testkontur.ru");
-        driver.FindElement(By.Id("Username")).SendKeys("user");
-        driver.FindElement(By.Name("Password")).SendKeys("1q2w3e4r%T");
-        driver.FindElement(By.Name("button")).Click();
-        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")) is not null);
         driver.FindElement(By.XPath("//span[contains(text(), 'Сообщества')]")).Click();
-        Assert.That(driver.FindElement(By.XPath("//h1[contains(text(), 'Сообщества')]")) is not null);
+        Assert.That(driver.FindElement(By.XPath("//h1[contains(text(), 'Сообщества')]")).Displayed, "Не найден заголовок Сообщества");
     }
+    
+
+    public void Auth(string user, string password)
+    {
+        driver.Navigate().GoToUrl("https://staff-testing.testkontur.ru");
+        driver.FindElement(By.Id("Username")).SendKeys(user);
+        driver.FindElement(By.Name("Password")).SendKeys(password);
+        driver.FindElement(By.Name("button")).Click();
+        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed, "Не удалось авторизоваться");
+    }
+    
+    
 }
