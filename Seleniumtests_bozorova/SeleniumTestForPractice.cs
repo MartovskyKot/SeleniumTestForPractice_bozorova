@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Data;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
@@ -11,6 +12,7 @@ public class SeleniumTestForPractice
 {
 
     public ChromeDriver driver;
+    public WebDriverWait wait;
 
     //убирала домен в переменную
     public string staffSite = "https://staff-testing.testkontur.ru";
@@ -23,6 +25,7 @@ public class SeleniumTestForPractice
         driver = new ChromeDriver(options);
         // - настраиваем неявное ожидание в 15 секунд
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
     }
     
     [Test]
@@ -103,4 +106,18 @@ public class SeleniumTestForPractice
         driver.FindElement(By.CssSelector("button[data-tid='DeleteButton']")).Click();
         driver.FindElement(By.XPath("//span[contains(text(), 'Удалить')]")).Click();
     }
+
+    [Test]
+    public void TestLogout()
+    {
+        Auth("user", "1q2w3e4r%T");
+        driver.Navigate().GoToUrl(staffSite + "/news");
+        driver.FindElement(By.CssSelector("div[data-tid='Avatar']")).Click();
+        driver.FindElement(By.CssSelector("span[data-tid='Logout'] span")).Click();
+        var logoutText = driver.FindElement(By.CssSelector("h3")).Text;
+        var expectedLogoutText = "Вы вышли из учетной записи";
+        Assert.That(logoutText == expectedLogoutText, $"Фактический текст {logoutText} отличается от ожидаемого {expectedLogoutText}");
+    }
+    
+    
 }
