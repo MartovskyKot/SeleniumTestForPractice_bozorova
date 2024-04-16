@@ -11,6 +11,9 @@ public class SeleniumTestForPractice
 
     public ChromeDriver driver;
 
+    //убирала домен в переменную
+    public string staffSite = "https://staff-testing.testkontur.ru";
+
     [SetUp]
     public void SetUp()
     {
@@ -24,14 +27,12 @@ public class SeleniumTestForPractice
     [Test]
     public void Authorization()
     {
-        
         // -перейти по урлу https://staff-testing.testkontur.ru
-        driver.Navigate().GoToUrl("https://staff-testing.testkontur.ru");
+        driver.Navigate().GoToUrl(staffSite);
 
         //явные ожидания
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
         wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Username")));
-        
        
         //-ввести логин и пароль
         var login = driver.FindElement(By.Id("Username"));
@@ -40,16 +41,12 @@ public class SeleniumTestForPractice
         var password = driver.FindElement(By.Name("Password"));
         password.SendKeys("1q2w3e4r%T");
         
-        
         // -нажать на кнопку "войти"
         var enter = driver.FindElement(By.Name("button"));
         enter.Click();
 
         // - проверяем что находимся на нужной странице
-
         Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed);
-
-        
     }
 
     [TearDown]
@@ -64,7 +61,7 @@ public class SeleniumTestForPractice
     public void TestMenu()
     {
         Auth("user", "1q2w3e4r%T");
-        driver.Navigate().GoToUrl("https://staff-testing.testkontur.ru");
+        driver.Navigate().GoToUrl(staffSite);
         driver.FindElement(By.XPath("//span[contains(text(), 'Сообщества')]")).Click();
         Assert.That(driver.FindElement(By.XPath("//h1[contains(text(), 'Сообщества')]")).Displayed, "Не найден заголовок Сообщества");
     }
@@ -72,7 +69,7 @@ public class SeleniumTestForPractice
 
     public void Auth(string user, string password)
     {
-        driver.Navigate().GoToUrl("https://staff-testing.testkontur.ru");
+        driver.Navigate().GoToUrl(staffSite);
         driver.FindElement(By.Id("Username")).SendKeys(user);
         driver.FindElement(By.Name("Password")).SendKeys(password);
         driver.FindElement(By.Name("button")).Click();
