@@ -89,5 +89,18 @@ public class SeleniumTestForPractice
         var expectedEmployeeName = "Милана Бозорова";
         Assert.That(employeeName == expectedEmployeeName,$"Фактическое имя {employeeName} отличается от ожидаемого {expectedEmployeeName}");
     }
-    
+
+    [Test]
+
+    public void TestCommunity()
+    {
+        Auth("user","1q2w3e4r%T");
+        driver.Navigate().GoToUrl(staffSite + "/communities");
+        driver.FindElement(By.XPath("//button[contains(text(), 'СОЗДАТЬ')]")).Click();
+        driver.FindElement(By.CssSelector("textarea[placeholder='Название сообщества']")).SendKeys("Тест");
+        driver.FindElement(By.CssSelector("textarea[placeholder='Описание сообщества']")).SendKeys("Тест");
+        driver.FindElement(By.XPath("//span[contains(text(), 'Создать')]")).Click();
+        driver.FindElement(By.CssSelector("button[data-tid='DeleteButton']")).Click();
+        driver.FindElement(By.XPath("//span[contains(text(), 'Удалить')]")).Click();
+    }
 }
