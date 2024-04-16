@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 
@@ -75,6 +76,18 @@ public class SeleniumTestForPractice
         driver.FindElement(By.Name("button")).Click();
         Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed, "Не удалось авторизоваться");
     }
-    
+
+    [Test]
+    public void TestSearch()
+    {
+        Auth("user","1q2w3e4r%T");
+        driver.Navigate().GoToUrl(staffSite);
+        driver.FindElement(By.CssSelector("span[data-tid='SearchBar']")).Click();
+        driver.FindElement(By.CssSelector("span[data-tid='SearchBar'] input")).SendKeys("Бозорова");
+        driver.FindElement(By.CssSelector("div[title='Милана Бозорова']")).Click();
+        var employeeName = driver.FindElement(By.CssSelector("div[data-tid='EmployeeName']")).Text;
+        var expectedEmployeeName = "Милана Бозорова";
+        Assert.That(employeeName == expectedEmployeeName,$"Фактическое имя {employeeName} отличается от ожидаемого {expectedEmployeeName}");
+    }
     
 }
