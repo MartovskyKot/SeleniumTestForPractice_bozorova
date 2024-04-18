@@ -1,8 +1,6 @@
-﻿using System.Data;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 
@@ -12,7 +10,6 @@ public class SeleniumTestForPractice
 {
 
     public ChromeDriver driver;
-    public WebDriverWait wait;
 
     //убирала домен в переменную
     public string staffSite = "https://staff-testing.testkontur.ru";
@@ -25,7 +22,23 @@ public class SeleniumTestForPractice
         driver = new ChromeDriver(options);
         // - настраиваем неявное ожидание в 15 секунд
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
-        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+    }
+    
+    [TearDown]
+    public void TearDown()
+    {
+        //- закрываем браузер и убиваем процесс драйвера
+        driver.Close();
+        driver.Quit();
+    }
+    
+    public void Auth(string user, string password)
+    {
+        driver.Navigate().GoToUrl(staffSite);
+        driver.FindElement(By.Id("Username")).SendKeys(user);
+        driver.FindElement(By.Name("Password")).SendKeys(password);
+        driver.FindElement(By.Name("button")).Click();
+        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed, "Не удалось авторизоваться");
     }
     
     [Test]
@@ -50,15 +63,7 @@ public class SeleniumTestForPractice
         enter.Click();
 
         // - проверяем что находимся на нужной странице
-        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed);
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        //- закрываем браузер и убиваем процесс драйвера
-        driver.Close();
-        driver.Quit();
+        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed, "Не удалось авторизоваться");
     }
 
     [Test]
@@ -68,16 +73,6 @@ public class SeleniumTestForPractice
         driver.Navigate().GoToUrl(staffSite);
         driver.FindElement(By.XPath("//span[contains(text(), 'Сообщества')]")).Click();
         Assert.That(driver.FindElement(By.XPath("//h1[contains(text(), 'Сообщества')]")).Displayed, "Не найден заголовок Сообщества");
-    }
-    
-
-    public void Auth(string user, string password)
-    {
-        driver.Navigate().GoToUrl(staffSite);
-        driver.FindElement(By.Id("Username")).SendKeys(user);
-        driver.FindElement(By.Name("Password")).SendKeys(password);
-        driver.FindElement(By.Name("button")).Click();
-        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed, "Не удалось авторизоваться");
     }
 
     [Test]
@@ -94,7 +89,6 @@ public class SeleniumTestForPractice
     }
 
     [Test]
-
     public void TestCommunity()
     {
         Auth("user","1q2w3e4r%T");
@@ -111,7 +105,6 @@ public class SeleniumTestForPractice
     public void TestLogout()
     {
         Auth("user", "1q2w3e4r%T");
-        driver.Navigate().GoToUrl(staffSite + "/news");
         driver.FindElement(By.CssSelector("div[data-tid='Avatar']")).Click();
         driver.FindElement(By.CssSelector("span[data-tid='Logout'] span")).Click();
         var logoutText = driver.FindElement(By.CssSelector("h3")).Text;
@@ -119,5 +112,24 @@ public class SeleniumTestForPractice
         Assert.That(logoutText == expectedLogoutText, $"Фактический текст {logoutText} отличается от ожидаемого {expectedLogoutText}");
     }
     
-    
+    [Test]
+    public void TestPost()
+    {
+        var testText = "Человек-бензопила";
+        var pathToFile = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../files/chainsawman.jpg"));
+        Auth("user", "1q2w3e4r%T");
+        driver.Navigate().GoToUrl(staffSite + "/communities/5a9fcb78-c7d9-48d2-af76-8fe21b70d182");
+        driver.FindElement(By.CssSelector("div[data-tid='AddButton']")).Click();
+        driver.FindElement(By.CssSelector("div[role='textbox']")).SendKeys(testText);
+        driver.FindElement(By.CssSelector("button[title='Добавить изображение']")).Click();
+        driver.FindElement(By.CssSelector("div[data-tid='PopupContent'] input")).SendKeys(pathToFile);
+        driver.FindElement(By.CssSelector("span[data-tid='SendButton'] button")).Click();
+        var text = driver.FindElement(By.CssSelector("span[data-text='true']")).Text;
+        Assert.That(text == testText, $"Фактический текст {text} отличается от ожидаемого {testText}");
+        driver.FindElement(By.CssSelector("div[data-tid='Feed'] div[data-tid='DropdownButton']")).Click();
+        driver.FindElement(By.CssSelector("span[data-tid='DeleteRecord']")).Click();
+        driver.FindElement(By.CssSelector("span[data-tid='DeleteButton']")).Click();
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        Assert.DoesNotThrow(() => wait.Until(ExpectedConditions.InvisibilityOfElementWithText(By.CssSelector("span[data-text='true']"),testText)), "Пост не удален");
+    }
 }
