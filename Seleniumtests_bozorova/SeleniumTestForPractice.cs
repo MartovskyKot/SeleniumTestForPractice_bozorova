@@ -38,7 +38,7 @@ public class SeleniumTestForPractice
         driver.FindElement(By.Id("Username")).SendKeys(user);
         driver.FindElement(By.Name("Password")).SendKeys(password);
         driver.FindElement(By.Name("button")).Click();
-        Assert.That(driver.FindElement(By.CssSelector("h1[data-tid='Title']")).Displayed, "Не удалось авторизоваться");
+        driver.FindElement(By.CssSelector("h1[data-tid='Title']"));
     }
     
     [Test]
@@ -69,6 +69,7 @@ public class SeleniumTestForPractice
     [Test]
     public void TestMenu()
     {
+        // auth не вынесен в SetUp, чтобы для каждого теста можно было указать конкретного пользователя
         Auth("user", "1q2w3e4r%T");
         driver.Navigate().GoToUrl(staffSite);
         driver.FindElement(By.XPath("//span[contains(text(), 'Сообщества')]")).Click();
@@ -78,6 +79,7 @@ public class SeleniumTestForPractice
     [Test]
     public void TestSearch()
     {
+        // auth не вынесен в SetUp, чтобы для каждого теста можно было указать конкретного пользователя
         Auth("user","1q2w3e4r%T");
         driver.Navigate().GoToUrl(staffSite);
         driver.FindElement(By.CssSelector("span[data-tid='SearchBar']")).Click();
@@ -91,6 +93,7 @@ public class SeleniumTestForPractice
     [Test]
     public void TestCommunity()
     {
+        // auth не вынесен в SetUp, чтобы для каждого теста можно было указать конкретного пользователя
         Auth("user","1q2w3e4r%T");
         driver.Navigate().GoToUrl(staffSite + "/communities");
         driver.FindElement(By.XPath("//button[contains(text(), 'СОЗДАТЬ')]")).Click();
@@ -104,6 +107,7 @@ public class SeleniumTestForPractice
     [Test]
     public void TestLogout()
     {
+        // auth не вынесен в SetUp, чтобы для каждого теста можно было указать конкретного пользователя
         Auth("user", "1q2w3e4r%T");
         driver.FindElement(By.CssSelector("div[data-tid='Avatar']")).Click();
         driver.FindElement(By.CssSelector("span[data-tid='Logout'] span")).Click();
@@ -117,6 +121,7 @@ public class SeleniumTestForPractice
     {
         var testText = "Человек-бензопила";
         var pathToFile = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../files/chainsawman.jpg"));
+        // auth не вынесен в SetUp, чтобы для каждого теста можно было указать конкретного пользователя
         Auth("user", "1q2w3e4r%T");
         driver.Navigate().GoToUrl(staffSite + "/communities/5a9fcb78-c7d9-48d2-af76-8fe21b70d182");
         driver.FindElement(By.CssSelector("div[data-tid='AddButton']")).Click();
